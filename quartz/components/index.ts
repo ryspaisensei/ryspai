@@ -8,6 +8,7 @@ import ReaderMode from "./ReaderMode"
 import Head from "./Head"
 import PageTitle from "./PageTitle"
 import LogoTitle from "./LogoTitle"
+import SimpleFooter from "./SimpleFooter"
 import ContentMeta from "./ContentMeta"
 import Spacer from "./Spacer"
 import TableOfContents from "./TableOfContents"
@@ -35,6 +36,7 @@ export {
   Head,
   PageTitle,
   LogoTitle,
+  SimpleFooter,
   ContentMeta,
   Spacer,
   TableOfContents,
