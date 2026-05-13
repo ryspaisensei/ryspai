@@ -6,9 +6,7 @@ export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
   afterBody: [],
-  footer: Component.Footer({
-    links: {},
-  }),
+  footer: Component.Spacer(),
 }
 
 // components for pages that display a single page (e.g. a single note)
