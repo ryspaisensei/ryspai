@@ -32,8 +32,8 @@ LogoTitle.css = `
   text-decoration: none;
 }
 .logo-title-img {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--lightgray);
