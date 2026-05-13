@@ -9,9 +9,8 @@ const LogoTitle: QuartzComponent = ({ fileData, cfg, displayClass }: QuartzCompo
   const logoSrc = baseDir + "/assets/asset_logo.jpg"
   return (
     <div class={classNames(displayClass, "logo-title")}>
-      <a href={baseDir} class="logo-title-link">
+      <a href={baseDir} class="logo-title-link" aria-label={title}>
         <img src={logoSrc} alt={title} class="logo-title-img" />
-        <h2 class="logo-title-name">{title}</h2>
       </a>
     </div>
   )
