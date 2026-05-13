@@ -132,11 +132,21 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
       const allFiles = content.map((c) => c[1].data)
       const cfg = ctx.cfg.configuration
 
+      // Папки, у которых уже есть собственный index.md → пропустить (не перетирать).
+      const foldersWithIndex: Set<SimpleSlug> = new Set(
+        allFiles
+          .filter((d) => d.slug?.endsWith("/index"))
+          .map((d) => simplifySlug(d.slug!) as unknown as SimpleSlug),
+      )
+
       const folders: Set<SimpleSlug> = new Set(
         allFiles.flatMap((data) => {
           return data.slug
             ? _getFolders(data.slug).filter(
-                (folderName) => folderName !== "." && folderName !== "tags",
+                (folderName) =>
+                  folderName !== "." &&
+                  folderName !== "tags" &&
+                  !foldersWithIndex.has(folderName),
               )
             : []
         }),
@@ -149,13 +159,22 @@ export const FolderPage: QuartzEmitterPlugin<Partial<FolderPageOptions>> = (user
       const allFiles = content.map((c) => c[1].data)
       const cfg = ctx.cfg.configuration
 
+      const foldersWithIndex: Set<SimpleSlug> = new Set(
+        allFiles
+          .filter((d) => d.slug?.endsWith("/index"))
+          .map((d) => simplifySlug(d.slug!) as unknown as SimpleSlug),
+      )
+
       // Find all folders that need to be updated based on changed files
       const affectedFolders: Set<SimpleSlug> = new Set()
       for (const changeEvent of changeEvents) {
         if (!changeEvent.file) continue
         const slug = changeEvent.file.data.slug!
         const folders = _getFolders(slug).filter(
-          (folderName) => folderName !== "." && folderName !== "tags",
+          (folderName) =>
+            folderName !== "." &&
+            folderName !== "tags" &&
+            !foldersWithIndex.has(folderName),
         )
         folders.forEach((folder) => affectedFolders.add(folder))
       }
