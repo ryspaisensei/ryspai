@@ -1,6 +1,6 @@
 ---
+aliases: ["ваыаыва"]
 Скрыть: true
-permalink: vayayva
 ---
 
 ![[1998_0.mp4]]

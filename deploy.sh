@@ -35,23 +35,15 @@ def slugify(name):
 
 SKIP_DIRS = {'.claude', '.obsidian', '.git', 'node_modules'}
 
-WIKI_LINK_RE = re.compile(r'\[\[([^\]|#]+?)(\|[^\]]+?)?\]\]')
-
-def transliterate_wiki_links(content):
-    def replace(m):
-        target = m.group(1)
-        alias = m.group(2) or ''
-        # Если target содержит кириллицу — транслитерируем
-        if re.search(r'[а-яёА-ЯЁ]', target):
-            # Сохраняем путь (папки) отдельно от имени файла
-            parts = target.rsplit('/', 1)
-            if len(parts) == 2:
-                new_target = parts[0] + '/' + slugify(parts[1])
-            else:
-                new_target = slugify(target)
-            return f'[[{new_target}{alias}]]'
-        return m.group(0)
-    return WIKI_LINK_RE.sub(replace, content)
+def inject_alias(content, stem):
+    """Добавляет aliases: ["оригинальное имя"] в frontmatter если его нет."""
+    alias_line = f'aliases: ["{stem}"]'
+    if re.search(r'^aliases\s*:', content, re.MULTILINE):
+        return content  # уже есть
+    if content.startswith('---\n'):
+        return content.replace('---\n', f'---\n{alias_line}\n', 1)
+    else:
+        return f'---\n{alias_line}\n---\n{content}'
 
 def copy_tree(src, dst):
     os.makedirs(dst, exist_ok=True)
@@ -60,15 +52,15 @@ def copy_tree(src, dst):
         if name.startswith('.') or name in SKIP_DIRS:
             continue
         if entry.is_dir():
-            # assets оставляем как есть (картинки, не нужен slug)
             new_name = name if name == 'assets' else slugify(name)
             copy_tree(entry.path, os.path.join(dst, new_name))
         else:
-            if name.endswith('.md'):
-                new_name = name if name == 'index.md' else slugify(name)
+            if name.endswith('.md') and name != 'index.md':
+                stem = os.path.splitext(name)[0]
+                new_name = slugify(name)
                 with open(entry.path, 'r', encoding='utf-8') as f:
                     content = f.read()
-                content = transliterate_wiki_links(content)
+                content = inject_alias(content, stem)
                 with open(os.path.join(dst, new_name), 'w', encoding='utf-8') as f:
                     f.write(content)
             else:
