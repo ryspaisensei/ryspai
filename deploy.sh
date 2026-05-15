@@ -12,7 +12,45 @@ cd "$SITE_DIR"
 echo "→ Syncing content from OBS..."
 rm -rf content
 mkdir -p content
-cp -R "$OBS_CONTENT/"* content/
+
+python3 - "$OBS_CONTENT" "$SITE_DIR/content" <<'PYEOF'
+import sys, os, shutil, re
+
+SRC, DST = sys.argv[1], sys.argv[2]
+
+TRANSLIT = {
+    'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ё':'yo','ж':'zh','з':'z',
+    'и':'i','й':'j','к':'k','л':'l','м':'m','н':'n','о':'o','п':'p','р':'r',
+    'с':'s','т':'t','у':'u','ф':'f','х':'kh','ц':'ts','ч':'ch','ш':'sh',
+    'щ':'shch','ъ':'','ы':'y','ь':'','э':'e','ю':'yu','я':'ya',
+}
+
+def slugify(name):
+    stem, ext = os.path.splitext(name)
+    s = ''.join(TRANSLIT.get(c, TRANSLIT.get(c.lower(), c)) for c in stem)
+    s = s.lower()
+    s = re.sub(r'[^a-z0-9]+', '-', s)
+    s = s.strip('-')
+    return s + ext
+
+def copy_tree(src, dst):
+    os.makedirs(dst, exist_ok=True)
+    for entry in os.scandir(src):
+        name = entry.name
+        # Папки assets оставляем как есть (содержат картинки, не нужен slug)
+        if entry.is_dir():
+            new_name = name if name == 'assets' else slugify(name)
+            copy_tree(entry.path, os.path.join(dst, new_name))
+        else:
+            if name.endswith('.md') and name != 'index.md':
+                new_name = slugify(name)
+            else:
+                new_name = name
+            shutil.copy2(entry.path, os.path.join(dst, new_name))
+
+copy_tree(SRC, DST)
+print(f"  Copied {sum(len(f) for _,_,f in os.walk(DST))} files")
+PYEOF
 
 echo "→ Staging changes..."
 git add -A
