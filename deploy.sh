@@ -4,6 +4,9 @@
 
 set -euo pipefail
 
+# Полный PATH нужен когда скрипт запускается из Obsidian (без окружения shell)
+export PATH="/usr/local/bin:/usr/bin:/bin:/opt/homebrew/bin:$PATH"
+
 OBS_CONTENT="/Users/ryspaisensei/Мой диск/OBS/ryspai.com"
 SITE_DIR="/Users/ryspaisensei/code/ryspai-site"
 
