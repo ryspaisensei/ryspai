@@ -35,6 +35,24 @@ def slugify(name):
 
 SKIP_DIRS = {'.claude', '.obsidian', '.git', 'node_modules'}
 
+WIKI_LINK_RE = re.compile(r'\[\[([^\]|#]+?)(\|[^\]]+?)?\]\]')
+
+def transliterate_wiki_links(content):
+    def replace(m):
+        target = m.group(1)
+        alias = m.group(2) or ''
+        # Если target содержит кириллицу — транслитерируем
+        if re.search(r'[а-яёА-ЯЁ]', target):
+            # Сохраняем путь (папки) отдельно от имени файла
+            parts = target.rsplit('/', 1)
+            if len(parts) == 2:
+                new_target = parts[0] + '/' + slugify(parts[1])
+            else:
+                new_target = slugify(target)
+            return f'[[{new_target}{alias}]]'
+        return m.group(0)
+    return WIKI_LINK_RE.sub(replace, content)
+
 def copy_tree(src, dst):
     os.makedirs(dst, exist_ok=True)
     for entry in os.scandir(src):
@@ -46,11 +64,15 @@ def copy_tree(src, dst):
             new_name = name if name == 'assets' else slugify(name)
             copy_tree(entry.path, os.path.join(dst, new_name))
         else:
-            if name.endswith('.md') and name != 'index.md':
-                new_name = slugify(name)
+            if name.endswith('.md'):
+                new_name = name if name == 'index.md' else slugify(name)
+                with open(entry.path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                content = transliterate_wiki_links(content)
+                with open(os.path.join(dst, new_name), 'w', encoding='utf-8') as f:
+                    f.write(content)
             else:
-                new_name = name
-            shutil.copy2(entry.path, os.path.join(dst, new_name))
+                shutil.copy2(entry.path, os.path.join(dst, name))
 
 copy_tree(SRC, DST)
 print(f"  Copied {sum(len(f) for _,_,f in os.walk(DST))} files")
