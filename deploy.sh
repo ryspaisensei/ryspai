@@ -36,14 +36,21 @@ def slugify(name):
 SKIP_DIRS = {'.claude', '.obsidian', '.git', 'node_modules'}
 
 def inject_alias(content, stem):
-    """Добавляет aliases: ["оригинальное имя"] в frontmatter если его нет."""
-    alias_line = f'aliases: ["{stem}"]'
-    if re.search(r'^aliases\s*:', content, re.MULTILINE):
-        return content  # уже есть
+    """Добавляет title и aliases из оригинального кириллического имени файла."""
+    lines = []
+    # title — только если нет
+    if not re.search(r'^title\s*:', content, re.MULTILINE):
+        lines.append(f'title: "{stem}"')
+    # aliases — только если нет
+    if not re.search(r'^aliases\s*:', content, re.MULTILINE):
+        lines.append(f'aliases: ["{stem}"]')
+    if not lines:
+        return content
+    insert = '\n'.join(lines) + '\n'
     if content.startswith('---\n'):
-        return content.replace('---\n', f'---\n{alias_line}\n', 1)
+        return content.replace('---\n', f'---\n{insert}', 1)
     else:
-        return f'---\n{alias_line}\n---\n{content}'
+        return f'---\n{insert}---\n{content}'
 
 def copy_tree(src, dst):
     os.makedirs(dst, exist_ok=True)
