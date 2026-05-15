@@ -1,8 +1,8 @@
 ---
-aliases: ["2026.05.13 - Валентин Лейтер - Страдание современных мужчин и как оно лечится (Куаныш Рыспай)"]
 created: 2026-05-13T18:00
 title: 2026.05.13 - Лейтер 3
 Скрыть: false
+aliases: ["2026.05.13 - Валентин Лейтер - Страдание современных мужчин и как оно лечится (Куаныш Рыспай)"]
 ---
 <iframe width="560" height="315" src="https://www.youtube.com/embed/eoQe8wlP_hE?si=ZIjR9B6RbzQWuVR4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 

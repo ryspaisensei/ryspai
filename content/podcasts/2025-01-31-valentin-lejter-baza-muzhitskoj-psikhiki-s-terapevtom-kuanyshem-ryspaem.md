@@ -1,6 +1,7 @@
 ---
-aliases: ["2025.01.31 - Валентин Лейтер - БАЗА мужицкой психики с терапевтом Куанышем Рыспаем"]
 title: 2025.01.31 - Лейтер 1
+aliases: ["2025.01.31 - Валентин Лейтер - БАЗА мужицкой психики с терапевтом Куанышем Рыспаем"]
+Скрыть: false
 ---
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/iAxdvhq9aMI?si=8r2LbGG3vS2hPHte" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

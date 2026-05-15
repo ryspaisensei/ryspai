@@ -35,23 +35,6 @@ def slugify(name):
 
 SKIP_DIRS = {'.claude', '.obsidian', '.git', 'node_modules'}
 
-def inject_alias(content, stem):
-    """Добавляет title и aliases из оригинального кириллического имени файла."""
-    lines = []
-    # title — только если нет
-    if not re.search(r'^title\s*:', content, re.MULTILINE):
-        lines.append(f'title: "{stem}"')
-    # aliases — только если нет
-    if not re.search(r'^aliases\s*:', content, re.MULTILINE):
-        lines.append(f'aliases: ["{stem}"]')
-    if not lines:
-        return content
-    insert = '\n'.join(lines) + '\n'
-    if content.startswith('---\n'):
-        return content.replace('---\n', f'---\n{insert}', 1)
-    else:
-        return f'---\n{insert}---\n{content}'
-
 def copy_tree(src, dst):
     os.makedirs(dst, exist_ok=True)
     for entry in os.scandir(src):
@@ -63,15 +46,10 @@ def copy_tree(src, dst):
             copy_tree(entry.path, os.path.join(dst, new_name))
         else:
             if name.endswith('.md') and name != 'index.md':
-                stem = os.path.splitext(name)[0]
                 new_name = slugify(name)
-                with open(entry.path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                content = inject_alias(content, stem)
-                with open(os.path.join(dst, new_name), 'w', encoding='utf-8') as f:
-                    f.write(content)
             else:
-                shutil.copy2(entry.path, os.path.join(dst, name))
+                new_name = name
+            shutil.copy2(entry.path, os.path.join(dst, new_name))
 
 copy_tree(SRC, DST)
 print(f"  Copied {sum(len(f) for _,_,f in os.walk(DST))} files")

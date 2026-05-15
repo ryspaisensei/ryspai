@@ -1,8 +1,8 @@
 ---
-aliases: ["2025.05.16 - Валентин Лейтер - Секреты железной менталки. Куаныш Рыспай"]
 title: 2025.05.16 - Лейтер 2
 topic: Психология, мужская психика, мотивация, вера и психотерапия
 Скрыть: false
+aliases: ["2025.05.16 - Валентин Лейтер - Секреты железной менталки. Куаныш Рыспай"]
 ---
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/EzyG9G1of90?si=Cww0aN-0AEQ3qy7K" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
