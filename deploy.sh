@@ -33,12 +33,16 @@ def slugify(name):
     s = s.strip('-')
     return s + ext
 
+SKIP_DIRS = {'.claude', '.obsidian', '.git', 'node_modules'}
+
 def copy_tree(src, dst):
     os.makedirs(dst, exist_ok=True)
     for entry in os.scandir(src):
         name = entry.name
-        # Папки assets оставляем как есть (содержат картинки, не нужен slug)
+        if name.startswith('.') or name in SKIP_DIRS:
+            continue
         if entry.is_dir():
+            # assets оставляем как есть (картинки, не нужен slug)
             new_name = name if name == 'assets' else slugify(name)
             copy_tree(entry.path, os.path.join(dst, new_name))
         else:
