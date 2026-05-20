@@ -1,12 +1,8 @@
 ---
-telegram_publish_channel_id: "1593462649"
-telegram_publish_message_id: 1889
-telegram_publish_message_link: https://t.me/c/1593462649/1889
-telegram_publish_at: 2025-01-06T09:06:47Z
-telegram_import_allow_override: true
-aliases: ["Как же стыдно быть нормисом"]
+aliases:
+  - Как же стыдно быть нормисом
 title: Как же стыдно быть нормисом
-Скрыть: false
+Скрыть: true
 ---
 
 ![▪️|20x20](tg_ce_5408851018219790524.webp)**Как же стыдно быть нормисом**

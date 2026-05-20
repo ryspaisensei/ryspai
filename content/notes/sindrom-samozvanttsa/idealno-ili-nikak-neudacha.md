@@ -1,12 +1,8 @@
 ---
-telegram_publish_channel_id: "1593462649"
-telegram_publish_message_id: 1570
-telegram_publish_message_link: https://t.me/c/1593462649/1570
-telegram_publish_at: 2024-01-28T04:27:42Z
-telegram_import_allow_override: true
-aliases: ["Идеально или никак неудача"]
+aliases:
+  - Идеально или никак неудача
 title: Идеально или никак неудача
-Скрыть: false
+Скрыть: true
 ---
 
 ![➡️|20x20](tg_ce_5204293223538764272.webp)**Идеально или никак = неудача**
