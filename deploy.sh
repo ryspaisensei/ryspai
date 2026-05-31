@@ -32,7 +32,8 @@ def slugify(name):
     stem, ext = os.path.splitext(name)
     s = ''.join(TRANSLIT.get(c, TRANSLIT.get(c.lower(), c)) for c in stem)
     s = s.lower()
-    s = re.sub(r'[^a-z0-9]+', '-', s)
+    s = re.sub(r'[^a-z0-9]+', '-', s)  # всё не-latin → дефис
+    s = re.sub(r'-{2,}', '-', s)        # несколько дефисов подряд → один
     s = s.strip('-')
     return s + ext
 
